@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
 import pyrebase
 
 app = Flask(__name__)
@@ -45,3 +46,12 @@ def create_list():
 
     resp = db.child("lists").push(list_data)
     return resp["name"]
+
+@app.route('/list')
+def get_list():
+    list_id = request.headers.get('listID')
+
+    db = firebase.database()
+
+    data = db.child('lists').child(list_id).get()
+    return jsonify(data.val())
