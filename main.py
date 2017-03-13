@@ -37,16 +37,11 @@ def create_list():
     list_name = request.headers.get('name')
 
     db = firebase.database()
-    new_list_key =  db.generate_key()
-    print new_list_key
+
     list_data = {
         'owner': owner,
         'name': list_name
     }
-#{'owner': str(owner),'name': str(list_name)}
-    # db.child("lists").push(new_list_key)
-    db.child("lists").push(list_data)
-    # db.update(list_data)
-    # db.child("lists").child(new_list_key).set(list_data)
 
-    return new_list_key
+    resp = db.child("lists").push(list_data)
+    return resp["name"]
